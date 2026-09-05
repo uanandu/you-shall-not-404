@@ -1,7 +1,6 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
 import ProjectList from '../../components/svelte/ProjectList.svelte';
-import ArchDiagram from '../../components/svelte/ArchDiagram.svelte';
 import { t } from '../../i18n/ui';
 import frProjects from '../../data/projects.fr.json';
 ---
@@ -16,7 +15,6 @@ import frProjects from '../../data/projects.fr.json';
 
   <blockquote class="panel__pull" set:html={t('fr', 'projects.pull')} />
 
-  <ArchDiagram client:visible />
   <ProjectList projects={frProjects} client:visible />
 </PageLayout>
 
