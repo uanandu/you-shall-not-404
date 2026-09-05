@@ -48,8 +48,12 @@
           {#if project.link}
             <a href={project.link} target="_blank" rel="noopener" class="project__link label">↗ Live</a>
           {/if}
-          {#if project.repo}
-            <a href={project.repo} target="_blank" rel="noopener" class="project__link label">↗ Code</a>
+          {#if project.status === 'Shipped'}
+            {#if project.repo}
+              <a href={project.repo} target="_blank" rel="noopener" class="project__link label">↗ Code</a>
+            {/if}
+          {:else}
+            <span class="project__placeholder label">Nothing to see here for now</span>
           {/if}
         </div>
       </div>
@@ -132,6 +136,14 @@
   }
 
   .project__link:hover { color: var(--clr-ink); }
+
+  .project__placeholder {
+    color: var(--clr-muted);
+    font-style: italic;
+    white-space: normal;
+    text-align: right;
+    max-width: 9rem;
+  }
 
   @media (max-width: 640px) {
     .project {
