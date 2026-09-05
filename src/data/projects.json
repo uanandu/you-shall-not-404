@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Shadow Mode",
+    "year": "2026",
+    "category": "Claude Code Plugin",
+    "status": "Shipped",
+    "description": "A Claude Code Plugin that intercepts risky tool calls — Bash, Write, Edit — and logs exactly what would have happened instead of executing it. A /shadow-mode command toggles it live; a second, model-invoked skill summarizes a session's shadow log in plain English. Installable from a real self-hosted marketplace, validated against Anthropic's own plugin review checks.",
+    "stack": ["Python", "Claude Code Hooks", "Claude Code Skills", "MCP"],
+    "repo": "https://github.com/uanandu/shadow-mode-proxy"
+  },
+  {
+    "title": "Spec Drift Detector",
+    "year": "2026",
+    "category": "Claude Code Plugin",
+    "status": "In progress",
+    "description": "Long Claude Code sessions quietly drift from the constraints they were given at the start. A Stop hook checks the last response against a written invariant checklist — deterministically first, then via a real model judgment — and blocks the turn from ending cleanly when something's wrong, with a safety valve so an unsatisfiable rule can't trap the session.",
+    "stack": ["Python", "Claude Code Hooks", "LiteLLM"],
+    "repo": "https://github.com/uanandu/spec-drift-detector"
+  },
+  {
+    "title": "Agent Worker Pool",
+    "year": "2026",
+    "category": "Go",
+    "status": "In progress",
+    "description": "A fixed-size worker pool for running many Claude Code calls concurrently without melting a rate limit or the local machine — bounded backpressure and clean context-cancellation shutdown, benchmarked against an unbounded goroutine-per-task baseline with real numbers.",
+    "stack": ["Go", "Goroutines", "Benchmarking"],
+    "repo": "https://github.com/uanandu/agent-worker-pool"
+  },
+  {
+    "title": "OpenSpec Conformance Checker",
+    "year": "2026",
+    "category": "CLI",
+    "status": "In progress",
+    "description": "OpenSpec's own validate command checks a change's file format — it never checks whether the code that shipped actually matches the plan. A CLI that closes that exact gap, verified against an open issue in OpenSpec's own tracker: parses a change's tasks and spec deltas, diffs them against real git history, and flags drift deterministically first, an LLM's judgment only when that's not enough to decide.",
+    "stack": ["Python", "Git", "LiteLLM", "Markdown AST parsing"],
+    "repo": "https://github.com/uanandu/openspec-conform"
+  }
+]

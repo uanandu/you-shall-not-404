@@ -1,0 +1,159 @@
+---
+import { ClientRouter } from 'astro:transitions';
+
+interface Props {
+  title?: string;
+  description?: string;
+  lang?: 'en' | 'fr';
+}
+
+const {
+  title = 'Anandu — Frontend Developer',
+  description = 'Personal portfolio of Anandu, a frontend developer crafting considered, fast web experiences.',
+  lang = 'en',
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://www.anandu.ca');
+
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:url"         content={canonicalURL} />
+    <meta property="og:site_name"   content="Anandu" />
+    <meta property="og:title"       content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image"       content={new URL('/landing.png', Astro.site).href} />
+    <meta property="og:image:width"  content="1306" />
+    <meta property="og:image:height" content="848" />
+    <meta property="og:locale"      content={lang === 'fr' ? 'fr_CA' : 'en_CA'} />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image"       content={new URL('/landing.png', Astro.site).href} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+    <ClientRouter />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <div id="cursor" aria-hidden="true" transition:persist></div>
+    <slot />
+    <script>
+      const cursor = document.getElementById('cursor')!;
+      const SELECTORS = 'a, button, [role="button"], input, textarea, select, label, [tabindex]';
+
+      let cx = -1000, cy = -1000;
+
+      document.addEventListener('mousemove', (e) => {
+        cx = e.clientX;
+        cy = e.clientY;
+        cursor.style.transform = `translate3d(calc(${cx}px - 50%), calc(${cy}px - 50%), 0)`;
+        if (cursor.style.opacity === '0' || cursor.style.opacity === '') {
+          cursor.style.opacity = '1';
+        }
+      });
+
+      document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
+      document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
+
+      // Event delegation covers dynamically rendered elements (e.g. mobile drawer links)
+      document.addEventListener('mouseover', (e) => {
+        const el = (e.target as HTMLElement).closest?.(SELECTORS) as HTMLElement | null;
+        if (el) {
+          cursor.classList.add('cursor--active');
+          el.dataset.cursorOver = 'true';
+        }
+      });
+
+      document.addEventListener('mouseout', (e) => {
+        const el = (e.target as HTMLElement).closest?.(SELECTORS) as HTMLElement | null;
+        if (el) {
+          const related = e.relatedTarget as HTMLElement | null;
+          if (!related || !el.contains(related)) {
+            cursor.classList.remove('cursor--active');
+            delete el.dataset.cursorOver;
+          }
+        }
+      });
+
+      function updateNav() {
+        const path = location.pathname.replace(/\/$/, '') || '/';
+        const isHome = path === '/' || path === '/fr';
+        const nav = document.querySelector('.nav');
+        if (nav) nav.classList.toggle('nav--bordered', !isHome);
+        document.querySelectorAll<HTMLAnchorElement>('.nav__link').forEach((a) => {
+          const href = (a.getAttribute('href') || '').replace(/\/$/, '') || '/';
+          a.classList.toggle('nav__link--active', href === path);
+        });
+        const contact = document.querySelector<HTMLAnchorElement>('.nav__contact');
+        if (contact) contact.classList.toggle('nav__link--active', path === '/contact' || path === '/fr/contact');
+
+        const isFr = path.startsWith('/fr');
+        const cta = document.querySelector<HTMLAnchorElement>('.statusbar__cta');
+        if (cta) {
+          cta.textContent = isFr ? 'Terrain de jeu ↗' : 'Playground ↗';
+          cta.setAttribute('href', isFr ? '/fr/playground' : '/playground');
+        }
+      }
+
+      updateNav();
+      document.querySelector('.content')?.scrollTo({ top: 0, behavior: 'instant' });
+
+      document.addEventListener('astro:after-swap', () => {
+        cursor.classList.remove('cursor--active');
+        updateNav();
+        document.querySelector('.content')?.scrollTo({ top: 0, behavior: 'instant' });
+      });
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+
+  .skip-link {
+    position: fixed;
+    top: -100%;
+    left: 1rem;
+    z-index: 99999;
+    background: var(--clr-ink);
+    color: var(--clr-bg);
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    transition: top 0.15s ease;
+  }
+
+  .skip-link:focus {
+    top: 1rem;
+  }
+</style>

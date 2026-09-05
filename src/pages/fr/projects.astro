@@ -1,0 +1,63 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import ProjectList from '../../components/svelte/ProjectList.svelte';
+import ArchDiagram from '../../components/svelte/ArchDiagram.svelte';
+import { t } from '../../i18n/ui';
+import frProjects from '../../data/projects.fr.json';
+---
+
+<PageLayout page="projects" title="Projets — Anandu" lang="fr">
+  <p class="panel__label label">{t('fr', 'projects.label')}</p>
+  <h2 class="panel__heading">{t('fr', 'projects.heading1')}<br><em>{t('fr', 'projects.heading2')}</em></h2>
+
+  <p class="panel__intro">
+    {t('fr', 'projects.intro')}
+  </p>
+
+  <blockquote class="panel__pull" set:html={t('fr', 'projects.pull')} />
+
+  <ArchDiagram client:visible />
+  <ProjectList projects={frProjects} client:visible />
+</PageLayout>
+
+<style>
+  .panel__label {
+    color: var(--clr-muted);
+    margin-bottom: 1.25rem;
+    display: block;
+  }
+
+  .panel__heading {
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 4vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.08;
+    color: var(--clr-ink);
+    margin-bottom: 1rem;
+  }
+
+  .panel__heading em { font-style: italic; font-weight: 400; }
+
+  .panel__intro {
+    font-size: 1rem;
+    color: var(--clr-ink-2);
+    line-height: 1.75;
+    margin-bottom: 2rem;
+    max-width: 52ch;
+  }
+
+  .panel__pull {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--clr-ink);
+    margin: 0 0 2.5rem;
+    padding-left: 1.25rem;
+    border-left: 1.5px solid var(--clr-ink);
+    max-width: 52ch;
+  }
+
+  .panel__pull :global(em) { font-weight: 400; font-style: italic; }
+</style>

@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Shadow Mode",
+    "year": "2026",
+    "category": "Plugin Claude Code",
+    "status": "En cours",
+    "description": "Un plugin Claude Code qui intercepte les appels d'outils risqués — Bash, Write, Edit — et enregistre exactement ce qui se serait passé plutôt que de l'exécuter. Une commande /shadow-mode l'active ou le désactive en direct ; une seconde compétence, invoquée par le modèle, résume le journal d'une session en langage clair. Installable depuis une vraie marketplace auto-hébergée.",
+    "stack": ["Python", "Claude Code Hooks", "Claude Code Skills", "MCP"],
+    "repo": "https://github.com/anandu-dev/shadow-mode-proxy"
+  },
+  {
+    "title": "Spec Drift Detector",
+    "year": "2026",
+    "category": "Plugin Claude Code",
+    "status": "En cours",
+    "description": "Les longues sessions Claude Code dérivent tranquillement des contraintes données au départ. Un hook Stop vérifie la dernière réponse par rapport à une liste d'invariants écrite — déterministiquement d'abord, puis via un vrai jugement de modèle — et bloque la fin du tour quand quelque chose cloche, avec une soupape de sécurité pour qu'une règle insatisfaisable ne puisse pas piéger la session.",
+    "stack": ["Python", "Claude Code Hooks", "LiteLLM"],
+    "repo": "https://github.com/anandu-dev/spec-drift-detector"
+  },
+  {
+    "title": "Agent Worker Pool",
+    "year": "2026",
+    "category": "Go",
+    "status": "En cours",
+    "description": "Un pool de workers de taille fixe pour exécuter plusieurs appels Claude Code en parallèle sans faire fondre une limite de débit ou la machine locale — contre-pression bornée et arrêt propre par annulation de contexte, comparé par des chiffres réels à une base de référence en goroutines non bornées.",
+    "stack": ["Go", "Goroutines", "Benchmarking"],
+    "repo": "https://github.com/anandu-dev/agent-worker-pool"
+  },
+  {
+    "title": "OpenSpec Conformance Checker",
+    "year": "2026",
+    "category": "CLI",
+    "status": "En cours",
+    "description": "La commande validate d'OpenSpec vérifie le format d'un changement — elle ne vérifie jamais si le code livré correspond réellement au plan. Une CLI qui comble exactement cette lacune, confirmée par un problème ouvert sur le dépôt d'OpenSpec lui-même : elle analyse les tâches et les deltas de spécification d'un changement, les compare à l'historique git réel, et signale les écarts déterministiquement d'abord, avec le jugement d'un LLM seulement quand ça ne suffit pas à trancher.",
+    "stack": ["Python", "Git", "LiteLLM", "Analyse d'arbre Markdown"],
+    "repo": "https://github.com/anandu-dev/openspec-conform"
+  }
+]

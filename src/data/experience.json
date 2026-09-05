@@ -1,0 +1,105 @@
+{
+  "companies": [
+    {
+      "name": "Deloitte",
+      "period": "Jan 2023 – Present",
+      "stack": ["Go", "JavaScript", "Docker", "K8s", "Azure"],
+      "roles": [
+        {
+          "title": "Solutions Specialist",
+          "period": "Jun 2025 – Present",
+          "desc": "Continued on the Government of Quebec engagement with expanded ownership — leading technical delivery, coordinating across workstreams, and taking on more accountability for timelines and outcomes.",
+          "projects": [
+            {
+              "name": "Government of Quebec",
+              "detail": "Continued API integration and middleware work with increased delivery ownership — leading client-facing technical sessions, managing workstream coordination, and owning architecture decisions end-to-end."
+            }
+          ]
+        },
+        {
+          "title": "Solutions Analyst",
+          "period": "Jan 2023 – Jun 2025",
+          "desc": "Fullstack and DevOps engineering across public sector engagements.",
+          "projects": [
+            {
+              "name": "ESDC",
+              "detail": "System-to-system integration connecting legacy federal services. REST and SOAP bridges, data transformation pipelines, and event-driven messaging."
+            },
+            {
+              "name": "Government of Quebec",
+              "detail": "API integration and middleware development. Designed service contracts, led technical workshops for client teams, and produced architecture documentation and runbooks."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Off-Paper Creative Agency",
+      "period": "Oct 2022 – Jan 2023",
+      "stack": ["Shopify", "Liquid", "HTML", "CSS", "JavaScript"],
+      "roles": [
+        {
+          "title": "Shopify Web Developer",
+          "period": "Oct 2022 – Jan 2023",
+          "desc": "Built editorial storefronts for a boutique creative agency. Converted visual designs into functional web pages using Shopify Liquid; collaborated across design, development, and management stages.",
+          "projects": []
+        }
+      ]
+    },
+    {
+      "name": "YPL Consulting Inc.",
+      "period": "Mar 2022 – Oct 2022",
+      "stack": ["HTML", "CSS", "JavaScript", "Linux", "DevOps"],
+      "roles": [
+        {
+          "title": "Contract Web Developer",
+          "period": "Aug 2022 – Oct 2022",
+          "desc": "Built client-facing web projects on contract.",
+          "projects": [
+            {
+              "name": "Client Portfolio",
+              "detail": "Portfolio website designed and developed from scratch for a client."
+            },
+            {
+              "name": "CRM Application",
+              "detail": "Customer Relationship Management app for managing profiles and clients — with payment and appointment systems. Delivered as a web app and cross-platform."
+            }
+          ]
+        },
+        {
+          "title": "Mentee",
+          "period": "Mar 2022 – Jul 2022",
+          "desc": "Mentorship program shadowing the team across DevOps and Linux system administration. Automated tooling, tested and deployed applications, and built with HTML and CSS.",
+          "projects": []
+        }
+      ]
+    },
+    {
+      "name": "techni-mek inc",
+      "period": "Oct 2021 – Mar 2022",
+      "stack": ["HVAC"],
+      "roles": [
+        {
+          "title": "Heating & Air Conditioning Technician Apprentice",
+          "period": "Oct 2021 – Mar 2022",
+          "desc": "Followed a genuine curiosity about the skilled trades — something outside my engineering background that I wanted to understand firsthand. Hands-on installation and maintenance of HVAC systems.",
+          "projects": []
+        }
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Concordia University",
+      "degree": "Diploma — Full-stack Web Development",
+      "period": "May – Aug 2022",
+      "year": "2022"
+    },
+    {
+      "institution": "Concordia University",
+      "degree": "Master's Degree — Civil Engineering",
+      "period": "2017 – 2019",
+      "year": "2017 – 2019"
+    }
+  ]
+}

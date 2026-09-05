@@ -1,0 +1,17 @@
+{
+  "currently": {
+    "role": "Consultant",
+    "org": "Deloitte Canada",
+    "location": "Montréal, QC"
+  },
+  "skillGroups": [
+    { "label": "Languages",     "items": ["Go (Golang)", "Rust", "TypeScript / JS", "Node.js"] },
+    { "label": "Currently learning", "items": ["Python", "LangGraph", "MCP"] },
+    { "label": "Infrastructure","items": ["Docker", "Kubernetes", "Helm", "ArgoCD", "Azure"] },
+    { "label": "Frontend",      "items": ["Svelte", "Astro", "Shopify Liquid"] },
+    { "label": "Data",          "items": ["PostgreSQL"] }
+  ],
+  "certs": [
+    { "name": "AZ-900", "full": "Microsoft Azure Fundamentals", "year": "2024" }
+  ]
+}

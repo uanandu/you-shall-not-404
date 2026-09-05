@@ -1,0 +1,105 @@
+{
+  "companies": [
+    {
+      "name": "Deloitte",
+      "period": "Janv. 2023 – Présent",
+      "stack": ["Go", "JavaScript", "Docker", "K8s", "Azure"],
+      "roles": [
+        {
+          "title": "Spécialiste en solutions",
+          "period": "Juin 2025 – Présent",
+          "desc": "Poursuite du mandat avec le gouvernement du Québec avec une responsabilité élargie — direction de la livraison technique, coordination entre les flux de travail, et prise en charge accrue des échéanciers et des résultats.",
+          "projects": [
+            {
+              "name": "Gouvernement du Québec",
+              "detail": "Poursuite de l'intégration d'API et du développement de middleware avec une responsabilité de livraison accrue — animation de sessions techniques côté client, coordination des flux de travail, et prise en charge des décisions d'architecture de bout en bout."
+            }
+          ]
+        },
+        {
+          "title": "Analyste en solutions",
+          "period": "Janv. 2023 – Juin 2025",
+          "desc": "Ingénierie fullstack et DevOps sur des mandats dans le secteur public.",
+          "projects": [
+            {
+              "name": "EDSC",
+              "detail": "Intégration système à système reliant des services fédéraux patrimoniaux. Ponts REST et SOAP, pipelines de transformation de données et messagerie pilotée par événements."
+            },
+            {
+              "name": "Gouvernement du Québec",
+              "detail": "Intégration d'API et développement de middleware. Conception de contrats de service, animation d'ateliers techniques pour les équipes clientes, et production de documentation d'architecture et de runbooks."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Off-Paper Creative Agency",
+      "period": "Oct. 2022 – Janv. 2023",
+      "stack": ["Shopify", "Liquid", "HTML", "CSS", "JavaScript"],
+      "roles": [
+        {
+          "title": "Développeur web Shopify",
+          "period": "Oct. 2022 – Janv. 2023",
+          "desc": "Construction de vitrines éditoriales pour une agence créative boutique. Conversion de maquettes visuelles en pages web fonctionnelles avec Shopify Liquid ; collaboration entre les étapes de conception, de développement et de gestion.",
+          "projects": []
+        }
+      ]
+    },
+    {
+      "name": "YPL Consulting Inc.",
+      "period": "Mars 2022 – Oct. 2022",
+      "stack": ["HTML", "CSS", "JavaScript", "Linux", "DevOps"],
+      "roles": [
+        {
+          "title": "Développeur web contractuel",
+          "period": "Août 2022 – Oct. 2022",
+          "desc": "Réalisation de projets web clients en mode contractuel.",
+          "projects": [
+            {
+              "name": "Portfolio client",
+              "detail": "Site web portfolio conçu et développé de A à Z pour un client."
+            },
+            {
+              "name": "Application CRM",
+              "detail": "Application de gestion de la relation client pour la gestion des profils et des clients — avec systèmes de paiement et de rendez-vous. Livré comme application web et multiplateforme."
+            }
+          ]
+        },
+        {
+          "title": "Stagiaire mentoré",
+          "period": "Mars 2022 – Juill. 2022",
+          "desc": "Programme de mentorat avec observation de l'équipe en DevOps et administration de systèmes Linux. Automatisation d'outils, tests et déploiements d'applications, et développement avec HTML et CSS.",
+          "projects": []
+        }
+      ]
+    },
+    {
+      "name": "techni-mek inc",
+      "period": "Oct. 2021 – Mars 2022",
+      "stack": ["HVAC"],
+      "roles": [
+        {
+          "title": "Apprenti technicien en climatisation et chauffage",
+          "period": "Oct. 2021 – Mars 2022",
+          "desc": "Suivi d'une curiosité authentique pour les métiers spécialisés — un domaine en dehors de ma formation en génie que je voulais comprendre de l'intérieur. Installation et maintenance de systèmes HVAC en contexte pratique.",
+          "projects": []
+        }
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Université Concordia",
+      "degree": "Diplôme — Développement web fullstack",
+      "period": "Mai – Août 2022",
+      "year": "2022"
+    },
+    {
+      "institution": "Université Concordia",
+      "degree": "Maîtrise — Génie civil",
+      "period": "2017 – 2019",
+      "year": "2017 – 2019"
+    }
+  ]
+}

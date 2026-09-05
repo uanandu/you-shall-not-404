@@ -1,0 +1,148 @@
+---
+import PageLayout from '../../../layouts/PageLayout.astro';
+import { t } from '../../../i18n/ui';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => data.lang === 'fr' && !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const dateFmt = new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: 'short', day: '2-digit' });
+---
+
+<PageLayout page="blog" lang="fr" title={t('fr', 'blog.title')}>
+  <p class="panel__label label">{t('fr', 'blog.label')}</p>
+  <h2 class="panel__heading">{t('fr', 'blog.heading1')}<br><em>{t('fr', 'blog.heading2')}</em></h2>
+
+  <p class="panel__intro">{t('fr', 'blog.intro')}</p>
+
+  {posts.length === 0 ? (
+    <p class="empty label">{t('fr', 'blog.empty')}</p>
+  ) : (
+    <ol class="post-list">
+      {posts.map(post => (
+        <li class="post">
+          <a href={`/fr/blog/${post.id.replace(/^fr\//, '')}`} class="post__link">
+            <span class="label post__date">{dateFmt.format(post.data.date)}</span>
+            <div class="post__body">
+              <h3 class="post__title">{post.data.title}</h3>
+              <p class="post__desc">{post.data.description}</p>
+              {post.data.tags.length > 0 && (
+                <ul class="post__tags" aria-label="Tags">
+                  {post.data.tags.map(tag => <li class="label post__tag">{tag}</li>)}
+                </ul>
+              )}
+            </div>
+            <span class="post__arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  )}
+</PageLayout>
+
+<style>
+  .panel__label {
+    color: var(--clr-muted);
+    margin-bottom: 1.25rem;
+    display: block;
+  }
+
+  .panel__heading {
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 4vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.08;
+    color: var(--clr-ink);
+    margin-bottom: 1rem;
+  }
+
+  .panel__heading em { font-style: italic; font-weight: 400; }
+
+  .panel__intro {
+    font-size: 1rem;
+    color: var(--clr-ink-2);
+    line-height: 1.75;
+    margin-bottom: 2.5rem;
+    max-width: 52ch;
+  }
+
+  .empty {
+    color: var(--clr-muted);
+    padding-block: 2rem;
+    border-top: 1px solid var(--clr-rule);
+  }
+
+  .post-list { display: flex; flex-direction: column; }
+
+  .post { border-top: 1px solid var(--clr-rule); }
+  .post:last-child { border-bottom: 1px solid var(--clr-rule); }
+
+  .post__link {
+    display: grid;
+    grid-template-columns: 8rem 1fr auto;
+    gap: 1.5rem;
+    align-items: start;
+    padding-block: 1.75rem;
+    padding-inline: 0.75rem;
+    transition: background var(--transition), box-shadow var(--transition);
+  }
+
+  .post__link:hover {
+    background: var(--clr-surface);
+    box-shadow: inset 2px 0 0 var(--clr-ink);
+  }
+
+  .post__date {
+    color: var(--clr-muted);
+    padding-top: 0.2rem;
+  }
+
+  .post__body { display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .post__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-weight: 700;
+    color: var(--clr-ink);
+  }
+
+  .post__desc {
+    font-size: 1rem;
+    color: var(--clr-muted);
+    line-height: 1.65;
+    max-width: 62ch;
+  }
+
+  .post__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem 1rem;
+    margin-top: 0.25rem;
+  }
+
+  .post__tag { color: var(--clr-muted); }
+
+  .post__arrow {
+    color: var(--clr-muted);
+    padding-top: 0.2rem;
+    transition: color var(--transition), transform var(--transition);
+  }
+
+  .post__link:hover .post__arrow {
+    color: var(--clr-ink);
+    transform: translateX(0.2rem);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .post__link:hover .post__arrow { transform: none; }
+  }
+
+  @media (max-width: 640px) {
+    .post__link {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+    .post__arrow { display: none; }
+  }
+</style>

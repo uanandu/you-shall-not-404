@@ -1,0 +1,413 @@
+---
+import Base from './Base.astro';
+import MobileNav from '../components/svelte/MobileNav.svelte';
+import Clock from '../components/svelte/Clock.svelte';
+import { t, type Lang } from '../i18n/ui';
+
+interface Props {
+  title?: string;
+  description?: string;
+  page: 'home' | 'projects' | 'about' | 'experience' | 'blog' | 'contact' | 'playground';
+  lang?: Lang;
+}
+
+const { title, description, page, lang = 'en' } = Astro.props;
+const isHome = page === 'home';
+
+const navLinks = lang === 'fr'
+  ? [
+      { label: t('fr', 'nav.work'),       href: '/fr/projects'   },
+      { label: t('fr', 'nav.about'),      href: '/fr/about'      },
+      { label: t('fr', 'nav.experience'), href: '/fr/experience' },
+      { label: t('fr', 'nav.blog'),       href: '/fr/blog'       },
+    ]
+  : [
+      { label: t('en', 'nav.work'),       href: '/projects'   },
+      { label: t('en', 'nav.about'),      href: '/about'      },
+      { label: t('en', 'nav.experience'), href: '/experience' },
+      { label: t('en', 'nav.blog'),       href: '/blog'       },
+    ];
+
+const contactHref = lang === 'fr' ? '/fr/contact' : '/contact';
+
+const currentPath = Astro.url.pathname;
+const altHref = lang === 'en'
+  ? '/fr' + (currentPath === '/' ? '/' : currentPath)
+  : (currentPath.replace(/^\/fr/, '') || '/');
+
+const mobileLinks = [
+  ...navLinks,
+  { label: t(lang, 'nav.contact'), href: contactHref },
+];
+
+const langToggle = { label: t(lang, 'nav.lang'), href: altHref };
+---
+
+<Base title={title} description={description} lang={lang}>
+
+  <!-- ── NAV ──────────────────────────────────────────────────── -->
+  <nav class:list={['nav', { 'nav--bordered': !isHome }]}>
+    <a href={lang === 'fr' ? '/fr/' : '/'} class="nav__mark label">Anandu.</a>
+
+    <ul class="nav__links" role="list">
+      {navLinks.map(link => (
+        <li>
+          {link.href.endsWith('/blog') ? (
+            <a href={link.href} class="nav__link nav__link--stamp label">{link.label}</a>
+          ) : (
+            <a href={link.href} class="nav__link label">{link.label}</a>
+          )}
+        </li>
+      ))}
+    </ul>
+
+    <div class="nav__right">
+      <a href={altHref} class="nav__lang label">{t(lang, 'nav.lang')}</a>
+      <a href={contactHref} class="nav__contact label">{t(lang, 'nav.contact')}</a>
+    </div>
+  </nav>
+
+  <MobileNav links={mobileLinks} langToggle={langToggle} menuLabel={t(lang, 'nav.menu')} closeLabel={t(lang, 'nav.close')} client:idle />
+
+  <!-- ── MAIN ──────────────────────────────────────────────────── -->
+  <main id="main" class:list={['main', { 'main--split': !isHome }]}>
+
+    <div class:list={['rail', { 'rail--home': isHome }]}>
+      {isHome ? (
+        <>
+          <div class="home__left">
+            <div class="rail__name" transition:name="site-name">
+              <span class="name-line name-line--1">ANANDU</span>
+            </div>
+            <slot name="rail-desc" />
+          </div>
+          <slot name="rail-extra" />
+        </>
+      ) : (
+        <div class="rail__name" transition:name="site-name">
+          <span class="name-line name-line--1">ANANDU</span>
+        </div>
+      )}
+    </div>
+
+    {!isHome && (
+      <div class="content" transition:name="main-content">
+        <slot />
+      </div>
+    )}
+
+  </main>
+
+  <!-- ── MARQUEE (home only) ───────────────────────────────────── -->
+  {isHome && (
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span class="marquee__content">FULLSTACK · DEVOPS · GO · TYPESCRIPT · KUBERNETES · CI/CD · CLOUD INFRASTRUCTURE · API DESIGN · PLATFORM ENGINEERING · RUST · HELM · ARGOCD ·&nbsp;</span>
+        <span class="marquee__content">FULLSTACK · DEVOPS · GO · TYPESCRIPT · KUBERNETES · CI/CD · CLOUD INFRASTRUCTURE · API DESIGN · PLATFORM ENGINEERING · RUST · HELM · ARGOCD ·&nbsp;</span>
+      </div>
+    </div>
+  )}
+
+  <!-- ── STATUSBAR ─────────────────────────────────────────────── -->
+  <footer class="statusbar" transition:persist>
+    <span class="label statusbar__loc">
+      <Clock client:idle />
+    </span>
+    <a href={lang === 'fr' ? '/fr/playground' : '/playground'} class="label statusbar__cta">{t(lang, 'statusbar.playground')}</a>
+  </footer>
+
+</Base>
+
+<style>
+  /* ── NAV ──────────────────────────────────────────────────── */
+  .nav {
+    position: fixed;
+    top: 0;
+    inset-inline: 0;
+    z-index: 100;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 1.5rem 2.5rem;
+    pointer-events: none;
+  }
+
+  .nav--bordered {
+    background: var(--clr-bg);
+    border-bottom: 1px solid var(--clr-rule);
+  }
+
+  .nav > * { pointer-events: all; }
+
+  .nav__mark {
+    font-family: var(--font-body);
+    color: var(--clr-ink);
+    line-height: 1.5;
+  }
+
+  .nav__links {
+    display: flex;
+    gap: 2rem;
+    padding-top: 0.1rem;
+  }
+
+  .nav__link {
+    color: var(--clr-muted);
+    transition: color var(--transition);
+  }
+
+  .nav__link:hover { color: var(--clr-ink); }
+
+  /* :global so JS-toggled class always matches regardless of Astro's scope hash */
+  :global(.nav__link--active) { color: var(--clr-ink) !important; }
+
+  /* ── Blog "ink stamp" badge ───────────────────────────────── */
+  .nav__link--stamp {
+    display: inline-block;
+    border: 1px solid var(--clr-ink-2);
+    padding: 0.2rem 0.55rem 0.15rem;
+    transform: rotate(-4deg);
+    transition: color var(--transition), border-color var(--transition), transform var(--transition);
+  }
+
+  .nav__link--stamp:hover {
+    color: var(--clr-ink);
+    border-color: var(--clr-ink);
+    transform: rotate(0deg);
+  }
+
+  :global(.nav__link--stamp.nav__link--active) {
+    border-color: var(--clr-ink) !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav__link--stamp { transition: none; }
+  }
+
+  .nav__right {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding-top: 0.1rem;
+  }
+
+  .nav__lang {
+    color: var(--clr-muted);
+    transition: color var(--transition);
+    padding-top: 0.1rem;
+  }
+
+  .nav__lang:hover { color: var(--clr-ink); }
+
+  .nav__contact {
+    color: var(--clr-muted);
+    transition: color var(--transition);
+    padding-top: 0.1rem;
+  }
+
+  .nav__contact:hover { color: var(--clr-ink); }
+  :global(.nav__contact.nav__link--active) { color: var(--clr-ink); }
+
+  /* ── MAIN LAYOUT ──────────────────────────────────────────── */
+  .main {
+    position: fixed;
+    inset: 0;
+    padding: 0 2.5rem;
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+  }
+
+  .rail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-top: 5rem;
+    padding-bottom: 3rem;
+  }
+
+  .home__left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-self: stretch;
+    text-align: center;
+  }
+
+  .main--split .rail {
+    width: clamp(10rem, 22vw, 16rem);
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding-bottom: 4rem;
+    padding-right: 2rem;
+    border-right: 1px solid var(--clr-rule);
+    flex-shrink: 0;
+  }
+
+  /* ── NAME ─────────────────────────────────────────────────── */
+  .rail__name {
+    display: flex;
+    flex-direction: column;
+    line-height: 0.88;
+    letter-spacing: -0.03em;
+  }
+
+  .name-line {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--clr-ink);
+  }
+
+  .rail--home {
+    align-items: stretch;
+    padding-bottom: 5.5rem;
+  }
+
+  .rail--home .rail__name {
+    width: 100%;
+    text-align: center;
+  }
+
+  .rail--home .name-line {
+    font-size: clamp(4.5rem, 11vw, 10.5rem);
+  }
+
+  .main--split .name-line {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+  }
+
+  .name-line--2 em {
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  /* ── CONTENT PANEL ────────────────────────────────────────── */
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding: 5.5rem 0 4rem 2.5rem;
+    min-width: 0;
+    contain: layout style paint;
+    will-change: opacity;
+  }
+
+  /* ── MARQUEE ─────────────────────────────────────────────── */
+  .marquee {
+    position: fixed;
+    bottom: 2.75rem;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    background: var(--clr-bg);
+    border-top: 1px solid var(--clr-rule);
+    border-bottom: 1px solid var(--clr-rule);
+    overflow: hidden;
+    padding: 0.4rem 0;
+  }
+
+  .marquee__track {
+    display: inline-flex;
+    white-space: nowrap;
+    animation: marquee-scroll 32s linear infinite;
+  }
+
+  .marquee__content {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    color: var(--clr-muted);
+    text-transform: uppercase;
+  }
+
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .marquee:hover .marquee__track {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee__track { animation: none; }
+  }
+
+  /* ── STATUSBAR ────────────────────────────────────────────── */
+  .statusbar {
+    position: fixed;
+    bottom: 0;
+    inset-inline: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2.5rem;
+    height: 2.75rem;
+    background: var(--clr-bg);
+    border-top: 1px solid var(--clr-rule);
+    pointer-events: none;
+  }
+
+  .statusbar > * { pointer-events: all; }
+
+  .statusbar__loc { color: var(--clr-muted); }
+
+  .statusbar__cta {
+    color: var(--clr-ink-2);
+    padding: 0.2rem 0.5rem;
+    border: 1px solid transparent;
+    transition: color var(--transition), background var(--transition), border-color var(--transition);
+  }
+
+  .statusbar__cta:hover {
+    color: var(--clr-bg);
+    background: var(--clr-ink);
+    border-color: var(--clr-ink);
+  }
+
+  /* ── MOBILE ───────────────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .nav { padding: 1.25rem; }
+    .nav__links, .nav__right { display: none; }
+    .main { padding: 0 1.25rem; }
+    .statusbar { padding: 0 1.25rem; }
+
+    .main--split .rail { display: none; }
+
+    .rail--home {
+      flex-direction: column-reverse; /* portrait first visually, name+desc below */
+      align-items: stretch;
+      overflow: hidden;
+      gap: 0;
+      padding-top: 5rem;
+      padding-bottom: 5.5rem;
+    }
+
+    .home__left {
+      justify-content: center;
+      align-self: auto;
+      flex-shrink: 0;
+      border-top: 1px solid var(--clr-rule);
+      padding: 1rem 0 0.5rem;
+      gap: 0;
+    }
+
+    .rail--home .rail__name {
+      width: 100%;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .rail--home .name-line {
+      font-size: clamp(3.75rem, 16vw, 5rem);
+    }
+
+    .content { padding: 5rem 0 3.5rem 0; }
+  }
+</style>

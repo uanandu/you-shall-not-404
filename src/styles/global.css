@@ -1,0 +1,162 @@
+/* ── Tokens ───────────────────────────────────────────────── */
+/* Dark-only palette. Roles kept identical to the old cream theme (ink,
+   surface, muted, rule) — only the direction inverted — so every component
+   below still makes sense; only the values here changed. Contrast against
+   --clr-bg (pure black): ink ~20:1, ink-2 ~9.9:1, muted ~6.2:1 (all clear
+   AA, most AAA), rule ~3:1 (WCAG's non-text minimum, kept just visible
+   rather than glaring), error ~5.4:1. */
+:root {
+  --clr-bg:      #000000;
+  --clr-surface: #0f0f0d;
+  --clr-ink:     #fafaf9;
+  --clr-ink-2:   #b6b2aa;
+  --clr-muted:   #8f8b83;
+  --clr-rule:    #5c584f;
+  --clr-error:   #e5484d;
+
+  --font-display: 'Playfair Display', 'Georgia', serif;
+  --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+
+  --transition: 0.3s ease;
+  --transition-slow: 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Reset ────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: var(--clr-bg);
+  color: var(--clr-ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+@media (max-width: 640px) {
+  body { text-rendering: auto; }
+}
+
+img, video { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+ul, ol { list-style: none; }
+
+/* ── Label / nav text style ───────────────────────────────── */
+.label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-family: var(--font-body);
+}
+
+/* ── Focus ────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 1px solid var(--clr-ink);
+  outline-offset: 3px;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────── */
+/* Firefox */
+* { scrollbar-width: thin; scrollbar-color: var(--clr-rule) transparent; }
+
+/* Webkit */
+::-webkit-scrollbar { width: 2px; height: 2px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--clr-rule);
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--clr-muted); }
+::-webkit-scrollbar-corner { background: transparent; }
+
+/* ── Custom cursor ────────────────────────────────────────── */
+@media (pointer: fine) {
+  body { cursor: none; }
+  a, button, [role="button"], input, textarea, select, label { cursor: none; }
+}
+
+#cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  pointer-events: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--clr-ink);
+  background: transparent;
+  transform: translate3d(-100vw, -100vh, 0);
+  opacity: 0;
+  transition:
+    width  0.22s cubic-bezier(0.25, 0, 0, 1),
+    height 0.22s cubic-bezier(0.25, 0, 0, 1),
+    opacity 0.3s ease,
+    background-color 0.22s ease,
+    border-color 0.22s ease;
+  will-change: transform;
+}
+
+#cursor.cursor--active {
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border-color: var(--clr-ink);
+  opacity: 0.4;
+}
+
+@media (pointer: coarse) { #cursor { display: none !important; } }
+
+/* ── Page transitions ─────────────────────────────────────── */
+@keyframes vt-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes vt-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Content panel: old exits in 120ms, new enters after 80ms gap */
+::view-transition-old(main-content) {
+  animation: 120ms ease-in both vt-fade-out;
+}
+::view-transition-new(main-content) {
+  animation: 260ms ease-out both vt-fade-in;
+  animation-delay: 80ms;
+}
+
+/* Name block: smooth morph between large and small */
+::view-transition-group(site-name) {
+  animation-duration: 0.38s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+::view-transition-old(site-name),
+::view-transition-new(site-name) {
+  animation-duration: 0.38s;
+}
+
+/* Portrait: quick fade */
+::view-transition-old(portrait) { animation: 160ms ease-in  both vt-fade-out; }
+::view-transition-new(portrait) { animation: 260ms ease-out both vt-fade-in; animation-delay: 60ms; }
+
+/* Root fallback — keep fast */
+::view-transition-old(root) { animation: 120ms ease-in  both vt-fade-out; }
+::view-transition-new(root) { animation: 200ms ease-out both vt-fade-in;  animation-delay: 60ms; }
+
+/* ── Reduced motion ───────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation-duration: 0.01ms !important; animation-delay: 0ms !important; }
+}

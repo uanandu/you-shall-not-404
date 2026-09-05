@@ -1,0 +1,136 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import ContactCard from '../../components/svelte/ContactCard.svelte';
+import { t } from '../../i18n/ui';
+
+const cardStrings = {
+  q1:           t('fr', 'card.q1'),
+  q2:           t('fr', 'card.q2'),
+  q3:           t('fr', 'card.q3'),
+  q4:           t('fr', 'card.q4'),
+  opt1:         t('fr', 'card.opt1'),
+  opt2:         t('fr', 'card.opt2'),
+  opt3:         t('fr', 'card.opt3'),
+  opt4:         t('fr', 'card.opt4'),
+  ph1:          t('fr', 'card.ph1'),
+  ph2:          t('fr', 'card.ph2'),
+  ph4:          t('fr', 'card.ph4'),
+  back:         t('fr', 'card.back'),
+  next:         t('fr', 'card.next'),
+  submit:       t('fr', 'card.submit'),
+  sending:      t('fr', 'card.sending'),
+  sent:         t('fr', 'card.sent'),
+  err_required: t('fr', 'card.err.required'),
+  err_email:    t('fr', 'card.err.email'),
+  err_min:      t('fr', 'card.err.min'),
+};
+---
+
+<PageLayout page="contact" title="Contact — Anandu" lang="fr">
+  <p class="panel__label label">{t('fr', 'contact.label')}</p>
+  <h2 class="panel__heading">{t('fr', 'contact.heading1')}<br><em>{t('fr', 'contact.heading2')}</em></h2>
+
+  <div class="contact__cols">
+    <div class="contact__aside">
+      <p class="contact__intro">
+        {t('fr', 'contact.intro1')}
+      </p>
+      <p class="contact__intro contact__intro--em">
+        {t('fr', 'contact.intro2')}
+      </p>
+      <a href="mailto:anandu_dev@icloud.com" class="contact__email label">
+        anandu_dev@icloud.com →
+      </a>
+      <div class="contact__social">
+        <p class="label contact__social-label">{t('fr', 'contact.elsewhere')}</p>
+        <a href="https://github.com/uanandu" target="_blank" rel="noopener" class="contact__link label">
+          GitHub ↗
+        </a>
+        <a href="https://www.linkedin.com/in/uanandu/" target="_blank" rel="noopener" class="contact__link label">
+          LinkedIn ↗
+        </a>
+      </div>
+    </div>
+
+    <ContactCard strings={cardStrings} client:visible />
+  </div>
+</PageLayout>
+
+<style>
+  .panel__label {
+    color: var(--clr-muted);
+    margin-bottom: 1.25rem;
+    display: block;
+  }
+
+  .panel__heading {
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 4vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.08;
+    color: var(--clr-ink);
+    margin-bottom: 2.5rem;
+  }
+
+  .panel__heading em { font-style: italic; font-weight: 400; }
+
+  .contact__cols {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  @media (max-width: 640px) {
+    .contact__cols { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
+  .contact__aside { display: flex; flex-direction: column; gap: 1rem; }
+
+  .contact__intro {
+    color: var(--clr-ink-2);
+    font-size: 1rem;
+    line-height: 1.85;
+  }
+
+  .contact__intro--em {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--clr-ink);
+    line-height: 1.5;
+  }
+
+  .contact__email {
+    display: inline-block;
+    color: var(--clr-ink);
+    border-bottom: 1px solid var(--clr-rule);
+    padding-bottom: 0.15rem;
+    transition: border-color var(--transition);
+    margin-top: 0.25rem;
+  }
+
+  .contact__email:hover { border-color: var(--clr-ink); }
+
+  .contact__social {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--clr-rule);
+    margin-top: 0.25rem;
+  }
+
+  .contact__social-label { color: var(--clr-muted); }
+
+  .contact__link {
+    display: inline-block;
+    color: var(--clr-ink);
+    border-bottom: 1px solid var(--clr-rule);
+    padding-bottom: 0.15rem;
+    transition: border-color var(--transition);
+  }
+
+  .contact__link:hover { border-color: var(--clr-ink); }
+</style>
