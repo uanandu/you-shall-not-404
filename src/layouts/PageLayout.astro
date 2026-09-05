@@ -212,7 +212,11 @@ const langToggle = { label: t(lang, 'nav.lang'), href: altHref };
   .main {
     position: fixed;
     inset: 0;
-    padding: 0 2.5rem;
+    /* right side trimmed by the same 0.75rem .content reserves for its
+       scrollbar below — net result: content/separators land at the same
+       spot as before, the scrollbar just gets a gutter instead of sitting
+       flush against them */
+    padding: 0 1.75rem 0 2.5rem;
     display: flex;
     align-items: stretch;
     overflow: hidden;
@@ -293,8 +297,11 @@ const langToggle = { label: t(lang, 'nav.lang'), href: altHref };
     overscroll-behavior: contain;
     /* right padding keeps right-aligned content (e.g. Experience's stack
        tags) clear of this element's own scrollbar — it had none before,
-       so a visible scrollbar could sit flush against/over that content */
-    padding: 5.5rem 1.5rem 4rem 2.5rem;
+       so a visible scrollbar could sit flush against/over that content.
+       .main's right padding is trimmed by this same amount, so content's
+       visual right edge lands exactly where it did before this change —
+       only the scrollbar gains a gutter. */
+    padding: 5.5rem 0.75rem 4rem 2.5rem;
     min-width: 0;
     contain: layout style paint;
     will-change: opacity;
