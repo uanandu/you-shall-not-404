@@ -4,9 +4,11 @@
     "year": "2026",
     "category": "Claude Code Plugin",
     "status": "Shipped",
+    "shipped": true,
     "description": "A Claude Code Plugin that intercepts risky tool calls — Bash, Write, Edit — and logs exactly what would have happened instead of executing it. A /shadow-mode command toggles it live; a second, model-invoked skill summarizes a session's shadow log in plain English. Installable from a real self-hosted marketplace, validated against Anthropic's own plugin review checks.",
     "stack": ["Python", "Claude Code Hooks", "Claude Code Skills", "MCP"],
-    "repo": "https://github.com/uanandu/shadow-mode-proxy"
+    "repo": "https://github.com/uanandu/shadow-mode-proxy",
+    "install": "/plugin marketplace add uanandu/shadow-mode-marketplace"
   },
   {
     "title": "Spec Drift Detector",

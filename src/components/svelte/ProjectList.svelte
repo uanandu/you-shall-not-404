@@ -7,19 +7,25 @@
     year: string;
     category: string;
     status: string;
+    /** Language-independent — status is a display string (English or French)
+     *  and shouldn't be string-matched to decide behaviour. */
+    shipped?: boolean;
     description: string;
     stack: string[];
     link?: string;
     repo?: string;
+    install?: string;
   };
 
   interface Props {
     projects?: typeof defaultProjects;
+    lang?: 'en' | 'fr';
   }
 
-  const { projects = defaultProjects }: Props = $props();
+  const { projects = defaultProjects, lang = 'en' }: Props = $props();
 
   const visible = projects as Project[];
+  const nothingHereYet = lang === 'fr' ? 'Rien à voir pour le moment' : 'Nothing to see here for now';
 </script>
 
 <div class="projects">
@@ -43,17 +49,23 @@
               <li class="label project__tech">{tech}</li>
             {/each}
           </ul>
+          {#if project.shipped && project.install}
+            <p class="project__install">
+              <span class="label">Install</span>
+              <code>{project.install}</code>
+            </p>
+          {/if}
         </div>
         <div class="project__links">
           {#if project.link}
             <a href={project.link} target="_blank" rel="noopener" class="project__link label">↗ Live</a>
           {/if}
-          {#if project.status === 'Shipped'}
+          {#if project.shipped}
             {#if project.repo}
               <a href={project.repo} target="_blank" rel="noopener" class="project__link label">↗ Code</a>
             {/if}
           {:else}
-            <span class="project__placeholder label">Nothing to see here for now</span>
+            <span class="project__placeholder label">{nothingHereYet}</span>
           {/if}
         </div>
       </div>
@@ -120,6 +132,22 @@
   }
 
   .project__tech { color: var(--clr-muted); }
+
+  .project__install {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-top: 0.4rem;
+  }
+
+  .project__install .label { color: var(--clr-muted); flex-shrink: 0; }
+
+  .project__install code {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--clr-ink-2);
+    overflow-wrap: anywhere;
+  }
 
   .project__links {
     display: flex;
