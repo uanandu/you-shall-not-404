@@ -291,7 +291,10 @@ const langToggle = { label: t(lang, 'nav.lang'), href: altHref };
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
-    padding: 5.5rem 0 4rem 2.5rem;
+    /* right padding keeps right-aligned content (e.g. Experience's stack
+       tags) clear of this element's own scrollbar — it had none before,
+       so a visible scrollbar could sit flush against/over that content */
+    padding: 5.5rem 1.5rem 4rem 2.5rem;
     min-width: 0;
     contain: layout style paint;
     will-change: opacity;
