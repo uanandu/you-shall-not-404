@@ -25,7 +25,7 @@
   const { projects = defaultProjects, lang = 'en' }: Props = $props();
 
   const visible = projects as Project[];
-  const nothingHereYet = lang === 'fr' ? 'Rien à voir pour le moment' : 'Nothing to see here for now';
+  const notReadyAlt = lang === 'fr' ? 'Un lapin qui jette un œil hors de son trou : rien à voir pour le moment.' : 'A rabbit peeking out of a hole: nothing to see here yet.';
 </script>
 
 <div class="projects">
@@ -65,7 +65,8 @@
               <a href={project.repo} target="_blank" rel="noopener" class="project__link label">↗ Code</a>
             {/if}
           {:else}
-            <span class="project__placeholder label">{nothingHereYet}</span>
+            <img class="project__peek project__peek--motion" src="/peekaboo.gif" alt={notReadyAlt} width="480" height="480" loading="lazy" />
+            <img class="project__peek project__peek--still" src="/peekaboo-static.png" alt={notReadyAlt} width="480" height="480" loading="lazy" />
           {/if}
         </div>
       </div>
@@ -165,12 +166,17 @@
 
   .project__link:hover { color: var(--clr-ink); }
 
-  .project__placeholder {
-    color: var(--clr-muted);
-    font-style: italic;
-    white-space: normal;
-    text-align: right;
-    max-width: 9rem;
+  .project__peek {
+    width: 4.5rem;
+    height: auto;
+    display: block;
+  }
+
+  .project__peek--still { display: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project__peek--motion { display: none; }
+    .project__peek--still { display: block; }
   }
 
   @media (max-width: 640px) {
