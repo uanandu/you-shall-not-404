@@ -36,16 +36,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://www.anan
     <meta property="og:site_name"   content="Anandu" />
     <meta property="og:title"       content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image"       content={new URL('/landing.png', Astro.site).href} />
-    <meta property="og:image:width"  content="1306" />
-    <meta property="og:image:height" content="848" />
+    <meta property="og:image"       content={new URL('/og-card.png', Astro.site).href} />
+    <meta property="og:image:width"  content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:locale"      content={lang === 'fr' ? 'fr_CA' : 'en_CA'} />
 
     <!-- Twitter / X -->
     <meta name="twitter:card"        content="summary_large_image" />
     <meta name="twitter:title"       content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image"       content={new URL('/landing.png', Astro.site).href} />
+    <meta name="twitter:image"       content={new URL('/og-card.png', Astro.site).href} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
