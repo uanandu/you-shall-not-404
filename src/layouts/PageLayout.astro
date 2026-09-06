@@ -14,6 +14,15 @@ interface Props {
 const { title, description, page, lang = 'en' } = Astro.props;
 const isHome = page === 'home';
 
+// A seamless marquee (translate one copy's width, then jump back) only
+// has no visible gap if a single copy is at least as wide as the
+// viewport — this string renders to roughly ~1000px at its font size,
+// narrower than most desktop viewports, so two copies alone showed a
+// gap right before each loop reset. Six copies, each holding a sixth of
+// the total translate, keeps the track wide enough on any real screen.
+const MARQUEE_TEXT = 'FULLSTACK · DEVOPS · GO · TYPESCRIPT · KUBERNETES · CI/CD · CLOUD INFRASTRUCTURE · API DESIGN · PLATFORM ENGINEERING · RUST · HELM · ARGOCD · ';
+const MARQUEE_COPIES = 6;
+
 const navLinks = lang === 'fr'
   ? [
       { label: t('fr', 'nav.work'),       href: '/fr/projects'   },
@@ -102,8 +111,9 @@ const langToggle = { label: t(lang, 'nav.lang'), href: altHref };
   {isHome && (
     <div class="marquee" aria-hidden="true">
       <div class="marquee__track">
-        <span class="marquee__content">FULLSTACK · DEVOPS · GO · TYPESCRIPT · KUBERNETES · CI/CD · CLOUD INFRASTRUCTURE · API DESIGN · PLATFORM ENGINEERING · RUST · HELM · ARGOCD ·&nbsp;</span>
-        <span class="marquee__content">FULLSTACK · DEVOPS · GO · TYPESCRIPT · KUBERNETES · CI/CD · CLOUD INFRASTRUCTURE · API DESIGN · PLATFORM ENGINEERING · RUST · HELM · ARGOCD ·&nbsp;</span>
+        {Array.from({ length: MARQUEE_COPIES }).map(() => (
+          <span class="marquee__content">{MARQUEE_TEXT}</span>
+        ))}
       </div>
     </div>
   )}
@@ -335,9 +345,13 @@ const langToggle = { label: t(lang, 'nav.lang'), href: altHref };
     text-transform: uppercase;
   }
 
+  /* -1/6, not -1/2 — MARQUEE_COPIES above is 6. Still exactly one
+     copy's width of travel either way, so the scroll speed is unchanged;
+     only the gap-avoidance math (see the comment near MARQUEE_COPIES) is
+     different. Keep this in sync if that constant ever changes. */
   @keyframes marquee-scroll {
     from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
+    to   { transform: translateX(-16.6667%); }
   }
 
   .marquee:hover .marquee__track {
