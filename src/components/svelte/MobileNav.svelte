@@ -4,7 +4,7 @@
 
   interface Props {
     links: { label: string; href: string }[];
-    langToggle: { label: string; href: string };
+    langToggle?: { label: string; href: string };
     menuLabel?: string;
     closeLabel?: string;
   }
@@ -47,14 +47,16 @@
         {link.label}<span class="arrow" aria-hidden="true">↗</span>
       </a>
     {/each}
-    <a
-      href={langToggle.href}
-      class="drawer__link drawer__link--lang"
-      style="animation-delay: {links.length * 55}ms"
-      onclick={() => (open = false)}
-    >
-      {langToggle.label}
-    </a>
+    {#if langToggle}
+      <a
+        href={langToggle.href}
+        class="drawer__link drawer__link--lang"
+        style="animation-delay: {links.length * 55}ms"
+        onclick={() => (open = false)}
+      >
+        {langToggle.label}
+      </a>
+    {/if}
   </div>
 {/if}
 

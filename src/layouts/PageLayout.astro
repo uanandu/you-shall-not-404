@@ -39,17 +39,10 @@ const navLinks = lang === 'fr'
 
 const contactHref = lang === 'fr' ? '/fr/contact' : '/contact';
 
-const currentPath = Astro.url.pathname;
-const altHref = lang === 'en'
-  ? '/fr' + (currentPath === '/' ? '/' : currentPath)
-  : (currentPath.replace(/^\/fr/, '') || '/');
-
 const mobileLinks = [
   ...navLinks,
   { label: t(lang, 'nav.contact'), href: contactHref },
 ];
-
-const langToggle = { label: t(lang, 'nav.lang'), href: altHref };
 ---
 
 <Base title={title} description={description} lang={lang}>
@@ -71,12 +64,11 @@ const langToggle = { label: t(lang, 'nav.lang'), href: altHref };
     </ul>
 
     <div class="nav__right">
-      <a href={altHref} class="nav__lang label">{t(lang, 'nav.lang')}</a>
       <a href={contactHref} class="nav__contact label">{t(lang, 'nav.contact')}</a>
     </div>
   </nav>
 
-  <MobileNav links={mobileLinks} langToggle={langToggle} menuLabel={t(lang, 'nav.menu')} closeLabel={t(lang, 'nav.close')} client:idle />
+  <MobileNav links={mobileLinks} menuLabel={t(lang, 'nav.menu')} closeLabel={t(lang, 'nav.close')} client:idle />
 
   <!-- ── MAIN ──────────────────────────────────────────────────── -->
   <main id="main" class:list={['main', { 'main--split': !isHome }]}>
@@ -200,14 +192,6 @@ const langToggle = { label: t(lang, 'nav.lang'), href: altHref };
     gap: 1.5rem;
     padding-top: 0.1rem;
   }
-
-  .nav__lang {
-    color: var(--clr-muted);
-    transition: color var(--transition);
-    padding-top: 0.1rem;
-  }
-
-  .nav__lang:hover { color: var(--clr-ink); }
 
   .nav__contact {
     color: var(--clr-muted);
