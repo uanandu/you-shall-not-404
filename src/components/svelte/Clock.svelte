@@ -1,6 +1,9 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
+  interface Props { lang?: 'en' | 'fr' }
+  let { lang = 'en' }: Props = $props();
+
   let time = $state('');
   let tz   = $state('');
 
@@ -22,7 +25,7 @@
   });
 </script>
 
-<span role="status" aria-live="polite" aria-label="Current time in Montréal">
+<span role="status" aria-live="polite" aria-label={lang === 'fr' ? 'Heure actuelle à Montréal' : 'Current time in Montréal'}>
   <span class="live-dot" aria-hidden="true">●</span> Montréal / {time} {tz}
 </span>
 

@@ -17,12 +17,14 @@
     }
 
     let i = 0;
+    let timeoutId: ReturnType<typeof setTimeout>;
+
     const typeLine1 = () => {
       if (i < line1.length) {
         displayed1 += line1[i++];
-        setTimeout(typeLine1, charDelay);
+        timeoutId = setTimeout(typeLine1, charDelay);
       } else {
-        setTimeout(startLine2, 180);
+        timeoutId = setTimeout(startLine2, 180);
       }
     };
 
@@ -32,13 +34,14 @@
       const typeLine2 = () => {
         if (j < line2.length) {
           displayed2 += line2[j++];
-          setTimeout(typeLine2, charDelay);
+          timeoutId = setTimeout(typeLine2, charDelay);
         }
       };
       typeLine2();
     };
 
-    setTimeout(typeLine1, 700);
+    timeoutId = setTimeout(typeLine1, 700);
+    return () => clearTimeout(timeoutId);
   });
 </script>
 

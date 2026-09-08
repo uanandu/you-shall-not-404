@@ -113,7 +113,7 @@ const mobileLinks = [
   <!-- ── STATUSBAR ─────────────────────────────────────────────── -->
   <footer class="statusbar" transition:persist>
     <span class="label statusbar__loc">
-      <Clock client:idle />
+      <Clock lang={lang} client:idle />
     </span>
     <a href={lang === 'fr' ? '/fr/playground' : '/playground'} class="label statusbar__cta">{t(lang, 'statusbar.playground')}</a>
   </footer>
