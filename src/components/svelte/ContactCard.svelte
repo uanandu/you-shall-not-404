@@ -7,7 +7,7 @@
     ph1: string; ph2: string; ph4: string;
     back: string; next: string;
     submit: string; sending: string; sent: string;
-    err_required: string; err_email: string; err_min: string;
+    err_required: string; err_email: string; err_min: string; err_submit: string;
   }
 
   interface Props { strings?: Partial<Strings>; }
@@ -32,7 +32,16 @@
     err_required: "Required.",
     err_email: "Invalid email.",
     err_min: "At least 10 characters.",
+    err_submit: "Something went wrong — try again, or email me directly.",
   };
+
+  // Out of the repo (.env, gitignored) rather than hardcoded — Web3Forms'
+  // free tier still requires this to ship in the client bundle (it only
+  // grants submitting to this form, not reading past submissions, so
+  // that's a different exposure than a real API secret), but at least it
+  // isn't sitting in version control. Must also be set in Vercel's
+  // project env vars, since Vite inlines PUBLIC_ vars at build time.
+  const WEB3FORMS_ACCESS_KEY = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY;
 
   const { strings: overrides = {} }: Props = $props();
   const s: Strings = { ...defaults, ...overrides };
@@ -65,14 +74,44 @@
   function next() { if (validate()) step = Math.min(step + 1, TOTAL); }
   function back() { error = ''; step = Math.max(step - 1, 0); }
 
-  function handleKey(e: KeyboardEvent) {
-    if (e.key === 'Enter') { e.preventDefault(); next(); }
+  // A single real <form>, submitted via a real type="submit" button, is
+  // what makes Enter-to-advance work consistently for every input type —
+  // text, email, and password-manager/autofill-triggered submits — instead
+  // of an ad-hoc keydown handler per field that autofill can bypass
+  // entirely. preventDefault() here is what stops that submit from
+  // actually navigating the browser (a real page reload/GET to self,
+  // which is what a <form> submit does by default with no listener
+  // stopping it).
+  function handleSubmit(e: SubmitEvent) {
+    e.preventDefault();
+    if (status === 'sending') return;
+    if (step < TOTAL) next();
+    else submit();
   }
 
   async function submit() {
     status = 'sending';
-    await new Promise(r => setTimeout(r, 1000));
-    status = 'sent';
+    error = '';
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: `Portfolio contact — ${topic}`,
+          name,
+          email,
+          topic,
+          message,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message ?? 'submit failed');
+      status = 'sent';
+    } catch {
+      status = 'idle';
+      error = s.err_submit;
+    }
   }
 
   function focusOnMount(node: HTMLElement) {
@@ -85,88 +124,95 @@
     <p class="sent-msg">{s.sent}</p>
   </div>
 
-{:else if step < TOTAL}
-  {#key step}
-    <div class="card" in:fade={{ duration: 180, delay: 80 }} out:fade={{ duration: 120 }}>
-
-      <div class="card__head">
-        <span class="label card__counter">
-          {String(step + 1).padStart(2, '0')} / {String(TOTAL).padStart(2, '0')}
-        </span>
-        <div class="card__bar" aria-hidden="true">
-          <div class="card__bar-fill" style="width: {((step + 1) / TOTAL) * 100}%"></div>
-        </div>
-      </div>
-
-      <p class="card__q">{questions[step]}</p>
-
-      <div class="card__answer">
-        {#if step === 0}
-          <input class="card__input" type="text" bind:value={name}
-            placeholder={s.ph1} onkeydown={handleKey} use:focusOnMount />
-        {:else if step === 1}
-          <input class="card__input" type="email" bind:value={email}
-            placeholder={s.ph2} onkeydown={handleKey} use:focusOnMount />
-        {:else if step === 2}
-          <div class="card__opts" role="group">
-            {#each options as opt}
-              <button type="button" class="card__opt label"
-                class:card__opt--on={topic === opt}
-                onclick={() => { topic = opt; error = ''; }}>
-                {opt}
-              </button>
-            {/each}
-          </div>
-        {:else}
-          <textarea class="card__textarea" bind:value={message}
-            placeholder={s.ph4} rows="4" use:focusOnMount></textarea>
-        {/if}
-      </div>
-
-      {#if error}
-        <p class="card__err label" role="alert" in:fade={{ duration: 150 }}>{error}</p>
-      {/if}
-
-      <div class="card__nav">
-        {#if step > 0}
-          <button type="button" class="card__back label" onclick={back}>{s.back}</button>
-        {:else}
-          <span></span>
-        {/if}
-        <button type="button" class="card__next label" onclick={next}>{s.next}</button>
-      </div>
-
-    </div>
-  {/key}
-
 {:else}
-  <div class="review" in:fade={{ duration: 180 }}>
+  <form class="contact-card" onsubmit={handleSubmit}>
+    {#if step < TOTAL}
+      {#key step}
+        <div class="card" in:fade={{ duration: 180, delay: 80 }} out:fade={{ duration: 120 }}>
 
-    <p class="label review__label">Review</p>
+          <div class="card__head">
+            <span class="label card__counter">
+              {String(step + 1).padStart(2, '0')} / {String(TOTAL).padStart(2, '0')}
+            </span>
+            <div class="card__bar" aria-hidden="true">
+              <div class="card__bar-fill" style="width: {((step + 1) / TOTAL) * 100}%"></div>
+            </div>
+          </div>
 
-    <dl class="review__dl">
-      {#each [
-        { label: s.q1, value: name },
-        { label: s.q2, value: email },
-        { label: s.q3, value: topic },
-        { label: s.q4, value: message },
-      ] as row}
-        <div class="review__row">
-          <dt class="label review__dt">{row.label}</dt>
-          <dd class="review__dd">{row.value}</dd>
+          <p class="card__q">{questions[step]}</p>
+
+          <div class="card__answer">
+            {#if step === 0}
+              <input class="card__input" type="text" bind:value={name}
+                placeholder={s.ph1} use:focusOnMount />
+            {:else if step === 1}
+              <input class="card__input" type="email" bind:value={email}
+                placeholder={s.ph2} use:focusOnMount />
+            {:else if step === 2}
+              <div class="card__opts" role="group">
+                {#each options as opt}
+                  <button type="button" class="card__opt label"
+                    class:card__opt--on={topic === opt}
+                    onclick={() => { topic = opt; error = ''; }}>
+                    {opt}
+                  </button>
+                {/each}
+              </div>
+            {:else}
+              <textarea class="card__textarea" bind:value={message}
+                placeholder={s.ph4} rows="4" use:focusOnMount></textarea>
+            {/if}
+          </div>
+
+          {#if error}
+            <p class="card__err label" role="alert" in:fade={{ duration: 150 }}>{error}</p>
+          {/if}
+
+          <div class="card__nav">
+            {#if step > 0}
+              <button type="button" class="card__back label" onclick={back}>{s.back}</button>
+            {:else}
+              <span></span>
+            {/if}
+            <button type="submit" class="card__next label">{s.next}</button>
+          </div>
+
         </div>
-      {/each}
-    </dl>
+      {/key}
 
-    <div class="card__nav">
-      <button type="button" class="card__back label" onclick={back}>{s.back}</button>
-      <button type="button" class="card__next label"
-        onclick={submit} disabled={status === 'sending'}>
-        {status === 'sending' ? s.sending : s.submit}
-      </button>
-    </div>
+    {:else}
+      <div class="review" in:fade={{ duration: 180 }}>
 
-  </div>
+        <p class="label review__label">Review</p>
+
+        <dl class="review__dl">
+          {#each [
+            { label: s.q1, value: name },
+            { label: s.q2, value: email },
+            { label: s.q3, value: topic },
+            { label: s.q4, value: message },
+          ] as row}
+            <div class="review__row">
+              <dt class="label review__dt">{row.label}</dt>
+              <dd class="review__dd">{row.value}</dd>
+            </div>
+          {/each}
+        </dl>
+
+        {#if error}
+          <p class="card__err label" role="alert" in:fade={{ duration: 150 }}>{error}</p>
+        {/if}
+
+        <div class="card__nav">
+          <button type="button" class="card__back label" onclick={back}>{s.back}</button>
+          <button type="submit" class="card__next label" disabled={status === 'sending'}>
+            {status === 'sending' ? s.sending : s.submit}
+          </button>
+        </div>
+
+      </div>
+    {/if}
+  </form>
 {/if}
 
 <style>
@@ -338,8 +384,22 @@
     color: var(--clr-ink);
   }
 
-  @media (max-width: 640px) {
+  /* ── Responsive ───────────────────────────────────────────── */
+  /* Container query, not a viewport media query: this card sits next to
+     a sidebar in a grid (see contact.astro's .contact__cols), so its own
+     available width can shrink well before the full viewport does — a
+     640px viewport breakpoint left the two-column button/review grids
+     cramped at plenty of in-between window sizes where the viewport was
+     still wide but the card itself wasn't. */
+  .contact-card { container-type: inline-size; }
+
+  @container (max-width: 420px) {
     .card__opts { grid-template-columns: 1fr; }
     .review__row { grid-template-columns: 1fr; gap: 0.2rem; }
+  }
+
+  @container (max-width: 340px) {
+    .card__q { font-size: 1.2rem; }
+    .card__nav { flex-wrap: wrap; gap: 0.75rem; }
   }
 </style>
