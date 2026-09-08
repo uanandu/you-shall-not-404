@@ -6,6 +6,7 @@
   },
   "skillGroups": [
     { "label": "Langages",        "items": ["Go (Golang)", "Rust", "TypeScript / JS", "Node.js"] },
+    { "label": "En cours d'apprentissage", "items": ["Python", "LangGraph", "MCP"] },
     { "label": "Infrastructure",  "items": ["Docker", "Kubernetes", "Helm", "ArgoCD", "Azure"] },
     { "label": "Interface",       "items": ["Svelte", "Astro", "Shopify Liquid"] },
     { "label": "Données",         "items": ["PostgreSQL"] }
