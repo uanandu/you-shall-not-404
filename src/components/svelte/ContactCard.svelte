@@ -93,17 +93,23 @@
     status = 'sending';
     error = '';
     try {
+      // FormData, not JSON.stringify + an explicit Content-Type header —
+      // the latter makes this a CORS "non-simple" request, forcing a
+      // preflight OPTIONS round-trip the browser must see succeed before
+      // it'll even attempt the real POST. FormData keeps it a simple
+      // request, matching Web3Forms' own documented usage.
+      const body = new FormData();
+      body.append('access_key', WEB3FORMS_ACCESS_KEY);
+      body.append('subject', `Portfolio contact — ${topic}`);
+      body.append('name', name);
+      body.append('email', email);
+      body.append('topic', topic);
+      body.append('message', message);
+
       const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
-          access_key: WEB3FORMS_ACCESS_KEY,
-          subject: `Portfolio contact — ${topic}`,
-          name,
-          email,
-          topic,
-          message,
-        }),
+        headers: { Accept: 'application/json' },
+        body,
       });
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.message ?? 'submit failed');
