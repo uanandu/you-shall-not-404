@@ -2,7 +2,7 @@ export type Lang = 'en' | 'fr';
 
 export const ui = {
   en: {
-    'nav.work': 'Work',
+    'nav.work': 'Projects',
     'nav.about': 'About',
     'nav.experience': 'Experience',
     'nav.blog': 'Brain Dumps',
@@ -29,8 +29,8 @@ export const ui = {
     'projects.label': 'Personal projects',
     'projects.heading1': 'Side projects &',
     'projects.heading2': 'how they connect.',
-    'projects.intro': "Trust infrastructure for agentic development, one layer at a time: four short, fully-scoped tools, from a single risky action up through whether shipped code actually matched the plan.",
-    'projects.pull': "Don't trust one action, one session, or unbounded concurrency.<br>Don't trust a plan nobody checked against.<br>Four tools, <em>closing the loop back to the plan they started from.</em>",
+    'projects.intro': "Trust infrastructure for agentic development, one layer at a time — from not trusting a single risky action, up through whether shipped code actually matched the plan.",
+    'projects.pull': "Don't trust one action, one session, or unbounded concurrency.<br>Don't trust a plan nobody checked against.<br><em>Closing the loop, one tool at a time.</em>",
     'experience.label': 'Career',
     'experience.heading': 'Four years building',
     'experience.heading.em': 'across the full stack.',
@@ -87,7 +87,7 @@ export const ui = {
     'playground.title': 'Playground — Anandu',
   },
   fr: {
-    'nav.work': 'Travaux',
+    'nav.work': 'Projets',
     'nav.about': 'À propos',
     'nav.experience': 'Expérience',
     'nav.blog': 'Fouillis Mental',
@@ -114,8 +114,8 @@ export const ui = {
     'projects.label': 'Projets personnels',
     'projects.heading1': 'Projets parallèles &',
     'projects.heading2': "comment ils s'articulent.",
-    'projects.intro': "Infrastructure de confiance pour le développement agentique, une couche à la fois : quatre outils courts et bien délimités, d'une seule action risquée jusqu'à la question de savoir si le code livré correspond réellement au plan.",
-    'projects.pull': "Ne faites confiance ni à une action, ni à une session, ni à une concurrence non bornée.<br>Ne faites confiance ni à un plan que personne n'a vérifié.<br>Quatre outils, <em>qui referment la boucle jusqu'au plan dont ils sont partis.</em>",
+    'projects.intro': "Infrastructure de confiance pour le développement agentique, une couche à la fois — de la méfiance envers une seule action risquée jusqu'à la question de savoir si le code livré correspond réellement au plan.",
+    'projects.pull': "Ne faites confiance ni à une action, ni à une session, ni à une concurrence non bornée.<br>Ne faites confiance ni à un plan que personne n'a vérifié.<br><em>Refermer la boucle, un outil à la fois.</em>",
     'experience.label': 'Carrière',
     'experience.heading': 'Quatre ans à construire',
     'experience.heading.em': 'sur toute la pile.',

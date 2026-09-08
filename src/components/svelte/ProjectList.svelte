@@ -24,7 +24,7 @@
 
   const { projects = defaultProjects, lang = 'en' }: Props = $props();
 
-  const visible = projects as Project[];
+  const visible = (projects as Project[]).filter((project) => project.shipped === true);
   const notReadyAlt = lang === 'fr' ? 'Un lapin qui jette un œil hors de son trou : rien à voir pour le moment.' : 'A rabbit peeking out of a hole: nothing to see here yet.';
 </script>
 
