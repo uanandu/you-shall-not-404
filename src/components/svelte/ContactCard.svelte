@@ -134,7 +134,7 @@
   <form class="contact-card" onsubmit={handleSubmit}>
     {#if step < TOTAL}
       {#key step}
-        <div class="card" in:fade={{ duration: 180, delay: 80 }} out:fade={{ duration: 120 }}>
+        <div class="card" in:fade={{ duration: 200, delay: 150 }} out:fade={{ duration: 140 }}>
 
           <div class="card__head">
             <span class="label card__counter">
@@ -187,7 +187,7 @@
       {/key}
 
     {:else}
-      <div class="review" in:fade={{ duration: 180 }}>
+      <div class="review" in:fade={{ duration: 200, delay: 150 }} out:fade={{ duration: 140 }}>
 
         <p class="label review__label">Review</p>
 
@@ -222,6 +222,12 @@
 {/if}
 
 <style>
+  /* A shared floor for .card and .review — each step's content differs
+     in height (one-line input vs. a 2x2 button grid vs. a textarea vs.
+     the review list), so without this the card visibly resized on every
+     step change, on top of whatever the fade itself was doing. */
+  .card, .review { min-height: 280px; }
+
   /* ── Progress header ─────────────────────────────────────── */
   .card__head {
     display: flex;
