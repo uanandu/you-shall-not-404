@@ -4,6 +4,7 @@ description: On writing systems for public sector clients where the real deliver
 date: 2025-11-08
 tags: [devops, consulting, kubernetes]
 lang: en
+draft: true
 ---
 
 Consulting on government infrastructure teaches you a lesson that's easy to skip when you're building for yourself: the best system isn't the one that's cleverest to build, it's the one the next team can safely delete a piece of.

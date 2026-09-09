@@ -4,6 +4,7 @@ description: Notes de conception sur DevRouter — un proxy de développement lo
 date: 2026-01-14
 tags: [go, devrouter, outillage]
 lang: fr
+draft: true
 ---
 
 Chaque équipe que j'ai rejointe a une version du même problème : une poignée de services qui ont chacun besoin de leur propre port, de leur propre `.env`, et d'un README que personne ne met à jour. Les nouvelles recrues passent leur première journée juste à faire fonctionner `localhost`.

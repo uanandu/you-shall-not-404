@@ -4,6 +4,7 @@ description: Pourquoi je veux arrêter d'ajouter la journalisation après coup, 
 date: 2026-03-02
 tags: [devops, observabilité, api]
 lang: fr
+draft: true
 ---
 
 La majorité du travail d'observabilité se fait après qu'un problème soit déjà survenu. Un service se comporte mal, personne ne peut expliquer pourquoi, et le correctif est un `console.log` posé à la hâte ou une intégration Datadog câblée sous pression. Ça fonctionne, mais c'est réactif — le système n'a jamais été conçu pour être observé, il a été conçu puis *interrogé*.

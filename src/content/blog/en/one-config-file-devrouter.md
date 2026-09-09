@@ -4,6 +4,7 @@ description: Design notes on DevRouter — a local dev proxy and self-hosted tun
 date: 2026-01-14
 tags: [go, devrouter, tooling]
 lang: en
+draft: true
 ---
 
 Every team I've joined has some version of the same problem: a handful of services that each need their own port, their own `.env`, and a README nobody updates. New hires spend their first day just getting `localhost` to behave.

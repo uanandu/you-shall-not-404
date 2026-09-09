@@ -4,6 +4,7 @@ description: Sur le fait d'écrire des systèmes pour des clients du secteur pub
 date: 2025-11-08
 tags: [devops, consultation, kubernetes]
 lang: fr
+draft: true
 ---
 
 Faire de la consultation sur de l'infrastructure gouvernementale enseigne une leçon facile à sauter quand on construit pour soi-même : le meilleur système n'est pas le plus astucieux à construire, c'est celui dont la prochaine équipe peut supprimer une partie sans danger.

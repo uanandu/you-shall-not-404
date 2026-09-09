@@ -4,6 +4,7 @@ description: Why I want to stop bolting on logging after the fact, and start des
 date: 2026-03-02
 tags: [devops, observability, api]
 lang: en
+draft: true
 ---
 
 Most observability work happens after something has already gone wrong. A service misbehaves, nobody can explain why, and the fix is a hasty round of `console.log` or a Datadog integration wired in under pressure. It works, but it's reactive — the system was never designed to be watched, it was designed and then *interrogated*.
