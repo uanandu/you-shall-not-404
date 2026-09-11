@@ -2,6 +2,7 @@
 import Base from './Base.astro';
 import MobileNav from '../components/svelte/MobileNav.svelte';
 import Clock from '../components/svelte/Clock.svelte';
+import MusicPlayer from '../components/svelte/MusicPlayer.svelte';
 import { t, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -112,9 +113,12 @@ const mobileLinks = [
 
   <!-- ── STATUSBAR ─────────────────────────────────────────────── -->
   <footer class="statusbar" transition:persist>
-    <span class="label statusbar__loc">
-      <Clock lang={lang} client:idle />
-    </span>
+    <div class="statusbar__left">
+      <MusicPlayer lang={lang} client:load />
+      <span class="label statusbar__loc">
+        <Clock lang={lang} client:idle />
+      </span>
+    </div>
     <a href={lang === 'fr' ? '/fr/playground' : '/playground'} class="label statusbar__cta">{t(lang, 'statusbar.playground')}</a>
   </footer>
 
@@ -325,7 +329,7 @@ const mobileLinks = [
     font-family: var(--font-mono);
     font-size: 0.6rem;
     letter-spacing: 0.14em;
-    color: var(--clr-muted);
+    color: var(--clr-ink-2);
     text-transform: uppercase;
   }
 
@@ -363,6 +367,12 @@ const mobileLinks = [
   }
 
   .statusbar > * { pointer-events: all; }
+
+  .statusbar__left {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
 
   .statusbar__loc { color: var(--clr-muted); }
 
