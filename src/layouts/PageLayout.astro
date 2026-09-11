@@ -1,7 +1,6 @@
 ---
 import Base from './Base.astro';
 import MobileNav from '../components/svelte/MobileNav.svelte';
-import Clock from '../components/svelte/Clock.svelte';
 import MusicPlayer from '../components/svelte/MusicPlayer.svelte';
 import { t, type Lang } from '../i18n/ui';
 
@@ -115,9 +114,7 @@ const mobileLinks = [
   <footer class="statusbar" transition:persist>
     <div class="statusbar__left">
       <MusicPlayer lang={lang} client:load />
-      <span class="label statusbar__loc">
-        <Clock lang={lang} client:idle />
-      </span>
+      <span class="label statusbar__loc">Montréal</span>
     </div>
     <a href={lang === 'fr' ? '/fr/playground' : '/playground'} class="label statusbar__cta">{t(lang, 'statusbar.playground')}</a>
   </footer>

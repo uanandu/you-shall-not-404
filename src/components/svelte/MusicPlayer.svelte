@@ -27,8 +27,15 @@
   aria-pressed={playing}
   aria-label={playing ? s.pause : s.play}
 >
-  <span class="music__disk" aria-hidden="true">
-    <span class="music__hole"></span>
+  <span class="music__box">
+    <svg class="music__disk" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" fill="currentColor" />
+      <circle cx="12" cy="12" r="8" fill="none" stroke="var(--clr-bg)" stroke-width="0.5" />
+      <circle cx="12" cy="12" r="6.2" fill="none" stroke="var(--clr-bg)" stroke-width="0.5" />
+      <circle cx="12" cy="12" r="4.6" fill="none" stroke="var(--clr-bg)" stroke-width="0.5" />
+      <circle cx="12" cy="12" r="3" fill="var(--clr-rule)" />
+      <circle cx="12" cy="12" r="0.7" fill="var(--clr-bg)" />
+    </svg>
   </span>
 </button>
 
@@ -53,31 +60,33 @@
     line-height: 0;
   }
 
+  .music__box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    border: 1px solid var(--clr-rule);
+    color: var(--clr-ink-2);
+    transform: rotate(-4deg);
+    transition: border-color var(--transition), color var(--transition), transform var(--transition);
+  }
+
+  .music:hover .music__box,
+  .music:focus-visible .music__box {
+    border-color: var(--clr-ink);
+    color: var(--clr-ink);
+    transform: rotate(0deg);
+  }
+
   .music__disk {
-    position: relative;
-    width: 1.1rem;
-    height: 1.1rem;
-    border-radius: 50%;
-    background: var(--clr-ink-2);
-    box-shadow: 0 0 0 2px var(--clr-bg), 0 0 0 3px var(--clr-rule);
+    width: 1.05rem;
+    height: 1.05rem;
     animation: music-spin 3s linear infinite;
     animation-play-state: paused;
-    transition: background var(--transition);
   }
-
-  .music:hover .music__disk { background: var(--clr-ink); }
 
   .music--playing .music__disk { animation-play-state: running; }
-
-  .music__hole {
-    position: absolute;
-    inset: 0;
-    margin: auto;
-    width: 0.3rem;
-    height: 0.3rem;
-    border-radius: 50%;
-    background: var(--clr-bg);
-  }
 
   @keyframes music-spin {
     to { transform: rotate(360deg); }
@@ -85,5 +94,6 @@
 
   @media (prefers-reduced-motion: reduce) {
     .music__disk { animation: none; }
+    .music__box { transition: none; }
   }
 </style>
