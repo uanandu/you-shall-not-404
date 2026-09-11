@@ -6,8 +6,8 @@
   const { lang = 'en' }: Props = $props();
 
   const s = {
-    en: { play: 'Play lofi music', pause: 'Pause lofi music' },
-    fr: { play: 'Jouer la musique lofi', pause: 'Mettre la musique en pause' },
+    en: { play: 'Play lofi music', pause: 'Pause lofi music', playShort: 'Play', pauseShort: 'Pause' },
+    fr: { play: 'Jouer la musique lofi', pause: 'Mettre la musique en pause', playShort: 'Jouer', pauseShort: 'Pause' },
   }[lang];
 
   let audioEl: HTMLAudioElement;
@@ -53,6 +53,7 @@
       </g>
     </svg>
   </span>
+  <span class="music__label label">{playing ? s.pauseShort : s.playShort}</span>
 </button>
 
 <audio
@@ -100,6 +101,17 @@
     height: 1.15rem;
   }
 
+  .music__label {
+    margin-left: 0.5rem;
+    color: var(--clr-muted);
+    transition: color var(--transition);
+  }
+
+  .music:hover .music__label,
+  .music:focus-visible .music__label {
+    color: var(--clr-ink-2);
+  }
+
   .music__reel {
     transform-box: fill-box;
     transform-origin: center;
@@ -119,6 +131,6 @@
 
   @media (prefers-reduced-motion: reduce) {
     .music__reel { animation: none; }
-    .music__box { transition: none; }
+    .music__box, .music__label { transition: none; }
   }
 </style>
