@@ -28,13 +28,29 @@
   aria-label={playing ? s.pause : s.play}
 >
   <span class="music__box">
-    <svg class="music__disk" viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="12" cy="12" r="10" fill="currentColor" />
-      <circle cx="12" cy="12" r="8" fill="none" stroke="var(--clr-bg)" stroke-width="0.5" />
-      <circle cx="12" cy="12" r="6.2" fill="none" stroke="var(--clr-bg)" stroke-width="0.5" />
-      <circle cx="12" cy="12" r="4.6" fill="none" stroke="var(--clr-bg)" stroke-width="0.5" />
-      <circle cx="12" cy="12" r="3" fill="var(--clr-rule)" />
-      <circle cx="12" cy="12" r="0.7" fill="var(--clr-bg)" />
+    <svg class="music__icon" viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="2" y="5" width="20" height="14" fill="currentColor" />
+      <circle cx="5" cy="6.6" r="0.4" fill="var(--clr-bg)" />
+      <circle cx="19" cy="6.6" r="0.4" fill="var(--clr-bg)" />
+      <circle cx="8" cy="12" r="3.4" fill="var(--clr-bg)" />
+      <circle cx="16" cy="12" r="3.4" fill="var(--clr-bg)" />
+      <rect x="9" y="15.6" width="6" height="1.8" fill="var(--clr-rule)" />
+
+      <g class="music__reel music__reel--a">
+        <circle cx="8" cy="12" r="2.6" fill="none" stroke="var(--clr-rule)" stroke-width="0.5" />
+        <line x1="8" y1="9.8" x2="8" y2="14.2" stroke="var(--clr-rule)" stroke-width="0.5" />
+        <line x1="6.1" y1="10.9" x2="9.9" y2="13.1" stroke="var(--clr-rule)" stroke-width="0.5" />
+        <line x1="6.1" y1="13.1" x2="9.9" y2="10.9" stroke="var(--clr-rule)" stroke-width="0.5" />
+        <circle cx="8" cy="12" r="0.6" fill="var(--clr-rule)" />
+      </g>
+
+      <g class="music__reel music__reel--b">
+        <circle cx="16" cy="12" r="2.6" fill="none" stroke="var(--clr-rule)" stroke-width="0.5" />
+        <line x1="16" y1="9.8" x2="16" y2="14.2" stroke="var(--clr-rule)" stroke-width="0.5" />
+        <line x1="14.1" y1="10.9" x2="17.9" y2="13.1" stroke="var(--clr-rule)" stroke-width="0.5" />
+        <line x1="14.1" y1="13.1" x2="17.9" y2="10.9" stroke="var(--clr-rule)" stroke-width="0.5" />
+        <circle cx="16" cy="12" r="0.6" fill="var(--clr-rule)" />
+      </g>
     </svg>
   </span>
 </button>
@@ -79,21 +95,30 @@
     transform: rotate(0deg);
   }
 
-  .music__disk {
-    width: 1.05rem;
-    height: 1.05rem;
-    animation: music-spin 3s linear infinite;
+  .music__icon {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  .music__reel {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: music-spin 3.6s linear infinite;
     animation-play-state: paused;
   }
 
-  .music--playing .music__disk { animation-play-state: running; }
+  /* reels turn at slightly different rates, like a real deck's supply
+     and takeup spools rather than two mirrored copies of one motion */
+  .music__reel--b { animation-duration: 3s; }
+
+  .music--playing .music__reel { animation-play-state: running; }
 
   @keyframes music-spin {
     to { transform: rotate(360deg); }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .music__disk { animation: none; }
+    .music__reel { animation: none; }
     .music__box { transition: none; }
   }
 </style>
