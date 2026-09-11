@@ -30,10 +30,10 @@
   <span class="music__box">
     <svg class="music__icon" viewBox="0 0 24 24" aria-hidden="true">
       <rect x="2" y="5" width="20" height="14" fill="currentColor" />
-      <circle cx="5" cy="6.6" r="0.4" fill="var(--clr-bg)" />
-      <circle cx="19" cy="6.6" r="0.4" fill="var(--clr-bg)" />
-      <circle cx="8" cy="12" r="3.4" fill="var(--clr-bg)" />
-      <circle cx="16" cy="12" r="3.4" fill="var(--clr-bg)" />
+      <circle cx="5" cy="6.6" r="0.4" fill="var(--clr-ink)" />
+      <circle cx="19" cy="6.6" r="0.4" fill="var(--clr-ink)" />
+      <circle cx="8" cy="12" r="3.4" fill="var(--clr-ink)" />
+      <circle cx="16" cy="12" r="3.4" fill="var(--clr-ink)" />
       <rect x="9" y="15.6" width="6" height="1.8" fill="var(--clr-rule)" />
 
       <g class="music__reel music__reel--a">
@@ -52,8 +52,8 @@
         <circle cx="16" cy="12" r="0.6" fill="var(--clr-rule)" />
       </g>
     </svg>
+    <span class="music__label label">{playing ? s.pauseShort : s.playShort}</span>
   </span>
-  <span class="music__label label">{playing ? s.pauseShort : s.playShort}</span>
 </button>
 
 <audio
@@ -77,39 +77,36 @@
     line-height: 0;
   }
 
+  /* pill shape is a deliberate one-off exception to the site's sharp-corner
+     rule — this is a media control, not a structural container, and the
+     rounded capsule is what visually separates it from the "Montréal"
+     label sitting right next to it */
   .music__box {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 1.6rem;
-    height: 1.6rem;
-    border: 1px solid var(--clr-rule);
-    color: var(--clr-ink-2);
-    transform: rotate(-4deg);
-    transition: border-color var(--transition), color var(--transition), transform var(--transition);
+    gap: 0.45rem;
+    height: 1.5rem;
+    padding: 0 0.7rem 0 0.35rem;
+    background: var(--clr-ink);
+    border-radius: 999px;
+    color: var(--clr-bg);
+    transition: opacity var(--transition);
   }
 
   .music:hover .music__box,
   .music:focus-visible .music__box {
-    border-color: var(--clr-ink);
-    color: var(--clr-ink);
-    transform: rotate(0deg);
+    opacity: 0.8;
   }
 
   .music__icon {
-    width: 1.15rem;
-    height: 1.15rem;
+    width: 1.05rem;
+    height: 1.05rem;
+    flex-shrink: 0;
   }
 
   .music__label {
-    margin-left: 0.5rem;
-    color: var(--clr-muted);
-    transition: color var(--transition);
-  }
-
-  .music:hover .music__label,
-  .music:focus-visible .music__label {
-    color: var(--clr-ink-2);
+    color: inherit;
+    line-height: 1;
   }
 
   .music__reel {
